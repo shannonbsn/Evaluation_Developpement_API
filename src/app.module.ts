@@ -8,6 +8,7 @@ import { Order } from './order/entities/order.entity';
 //import { OrderItemsModule } from './order-items/order-items.module';
 import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
+import { OrderItemsModule } from './order-items/order-items.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { CategoriesModule } from './categories/categories.module';
     //OrderItemsModule,
     ProductsModule,
     CategoriesModule,
+    OrderItemsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
