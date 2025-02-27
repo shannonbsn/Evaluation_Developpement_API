@@ -1,9 +1,7 @@
-import { IsDate, IsNotEmpty } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsDateString, IsNotEmpty } from 'class-validator';
 
 export class CreateOrderDto {
-    @Type(() => Date)
-    @IsDate()
+    @IsDateString()
     @IsNotEmpty()
-    order_date: Date;
+    order_date: string;
 }

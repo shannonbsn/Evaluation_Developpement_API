@@ -14,7 +14,11 @@ export class OrderService {
   ) { }
 
   async create(createOrderDto: CreateOrderDto): Promise<Order> {
-    return await this.orderRepository.save(createOrderDto);
+    const order = this.orderRepository.create({
+      order_date: new Date(createOrderDto.order_date),
+    });
+
+    return await this.orderRepository.save(order);
   }
 
   async findAll(): Promise<Order[]> {

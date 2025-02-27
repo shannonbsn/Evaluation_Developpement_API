@@ -7,7 +7,7 @@ export class Order {
     @PrimaryGeneratedColumn('uuid')
     order_id: string;
 
-    @Column()
+    @Column({ type: 'timestamp' })
     order_date: Date;
 
     // @OneToMany(() => OrderItems, orderItems => orderItems.order)
