@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Order } from 'src/order/entities/order.entity';
 import { Product } from 'src/products/entities/product.entity';
 
-@Entity("orders")
+@Entity("orderItems")
 export class OrderItem {
     @PrimaryColumn('uuid')
     order_id: string;

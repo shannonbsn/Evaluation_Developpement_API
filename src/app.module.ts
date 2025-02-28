@@ -5,10 +5,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { OrderModule } from './order/order.module';
 import { Order } from './order/entities/order.entity';
-//import { OrderItemsModule } from './order-items/order-items.module';
-import { ProductsModule } from './products/products.module';
-import { CategoriesModule } from './categories/categories.module';
 import { OrderItemsModule } from './order-items/order-items.module';
+import { OrderItem } from './order-items/entities/order-item.entity';
+import { ProductsModule } from './products/products.module';
+import { Product } from './products/entities/product.entity';
+import { CategoriesModule } from './categories/categories.module';
+import { Category } from './categories/entities/category.entity';
 
 @Module({
   imports: [
@@ -20,14 +22,13 @@ import { OrderItemsModule } from './order-items/order-items.module';
       username: 'root',
       password: 'root',
       database: 'api_backend',
-      entities: [Order],
+      entities: [Order, OrderItem, Product, Category],
       synchronize: true,
     }),
     OrderModule,
-    //OrderItemsModule,
+    OrderItemsModule,
     ProductsModule,
     CategoriesModule,
-    OrderItemsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
