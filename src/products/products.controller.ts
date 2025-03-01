@@ -23,6 +23,13 @@ export class ProductsController {
     return this.productsService.findOne(id);
   }
 
+  @Get('categories/:categoryId/products')
+  async findByCategory(
+    @Param('categoryId') categoryId: string,
+  ): Promise<Product[]> {
+    return this.productsService.findByCategory(categoryId);
+  }
+
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto): Promise<Product> {
     return this.productsService.update(id, updateProductDto);
