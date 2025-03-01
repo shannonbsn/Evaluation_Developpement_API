@@ -19,8 +19,8 @@ export class ProductsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productsService.findOne(+id);
+  async findOne(@Param('id') id: string): Promise<Product | null> {
+    return this.productsService.findOne(id);
   }
 
   @Patch(':id')
