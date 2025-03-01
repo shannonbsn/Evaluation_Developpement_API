@@ -1,6 +1,12 @@
-import { IsNumber, Min, Max } from 'class-validator';
+import { IsUUID, IsNumber, Min, Max } from 'class-validator';
 
 export class CreateOrderItemDto {
+    @IsUUID()
+    order_id: string;
+
+    @IsUUID()
+    product_id: string
+
     @IsNumber()
     @Min(1)
     quantity: number;
@@ -8,5 +14,5 @@ export class CreateOrderItemDto {
     @IsNumber()
     @Min(0)
     @Max(100)
-    discount: number;
+    reduction_percentage: number;
 }

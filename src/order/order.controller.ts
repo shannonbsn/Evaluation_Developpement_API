@@ -33,7 +33,4 @@ export class OrderController {
     await this.orderService.remove(id);
     return { message: `Commande avec l'ID ${id} supprimée avec succès.` };
   }
-  // remove(@Param('id') id: string) {
-  //   return this.orderService.remove(+id);
-  // }
 }
