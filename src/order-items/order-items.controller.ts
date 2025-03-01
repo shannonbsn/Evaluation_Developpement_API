@@ -1,10 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
 import { OrderItemsService } from './order-items.service';
 import { CreateOrderItemDto } from './dto/create-order-item.dto';
 import { UpdateOrderItemDto } from './dto/update-order-item.dto';
 import { OrderItem } from './entities/order-item.entity';
 
-@Controller('order-items')
+@Controller('orderitems')
 export class OrderItemsController {
   constructor(private readonly orderItemsService: OrderItemsService) { }
 
@@ -13,23 +13,25 @@ export class OrderItemsController {
     return await this.orderItemsService.create(createOrderItemDto);
   }
 
-  @Get()
-  findAll() {
-    return this.orderItemsService.findAll();
+  @Get('/orders/:order_id/orderitems')
+  async findByOrder(@Param('order_id') order_id: string): Promise<OrderItem[]> {
+    return this.orderItemsService.findByOrder(order_id);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.orderItemsService.findOne(+id);
+  @Put(':order_id/:product_id')
+  update(
+    @Param('order_id') order_id: string,
+    @Param('product_id') product_id: string,
+    @Body() updateOrderItemDto: UpdateOrderItemDto,
+  ) {
+    return this.orderItemsService.update(order_id, product_id, updateOrderItemDto);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderItemDto: UpdateOrderItemDto) {
-    return this.orderItemsService.update(+id, updateOrderItemDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.orderItemsService.remove(+id);
+  @Delete(':order_id/:product_id')
+  async remove(
+    @Param('order_id') order_id: string,
+    @Param('product_id') product_id: string,
+  ): Promise<void> {
+    return this.orderItemsService.remove(order_id, product_id);
   }
 }

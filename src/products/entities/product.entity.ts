@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { OrderItem } from 'src/order-items/entities/order-item.entity';
 import { Category } from 'src/categories/entities/category.entity';
@@ -21,5 +21,7 @@ export class Product {
     orderItems: OrderItem[];
 
     @ManyToOne(() => Category, (category) => category.products)
+    @JoinColumn({ name: 'category_id' })
     category: Category;
+
 }

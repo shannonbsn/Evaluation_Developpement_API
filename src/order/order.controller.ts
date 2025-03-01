@@ -23,6 +23,12 @@ export class OrderController {
     return this.orderService.findOne(+id);
   }
 
+  @Get(':order_id/total_price')
+  async getTotalPrice(@Param('order_id') order_id: string): Promise<{ totalPrice: number }> {
+    const totalPrice = await this.orderService.calculateTotalPrice(order_id);
+    return { totalPrice };
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
     return this.orderService.update(+id, updateOrderDto);

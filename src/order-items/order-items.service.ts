@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateOrderItemDto } from './dto/create-order-item.dto';
@@ -23,35 +23,46 @@ export class OrderItemsService {
   async create(createOrderItemDto: CreateOrderItemDto): Promise<OrderItem> {
     const { order_id, product_id, quantity, reduction_percentage } = createOrderItemDto;
 
-    const order = await this.ordersRepository.findOne({ where: { order_id: order_id } });
-    if (!order) throw new Error('Order not found');
+    const order = await this.ordersRepository.findOne({ where: { order_id } });
+    if (!order) throw new NotFoundException(`Order with ID ${order_id} not found`);
 
-    const product = await this.productsRepository.findOne({ where: { product_id: product_id } });
-    if (!product) throw new Error('Product not found');
+    const product = await this.productsRepository.findOne({ where: { product_id } });
+    if (!product) throw new NotFoundException(`Product with ID ${product_id} not found`);
 
     const orderItem = this.orderItemsRepository.create({
-      order,
-      product,
+      order_id,
+      product_id,
       quantity,
-      reduction_percentage: reduction_percentage,
+      reduction_percentage,
     });
 
     return await this.orderItemsRepository.save(orderItem);
   }
 
-  findAll() {
-    return `This action returns all orderItems`;
+  async findByOrder(order_id: string): Promise<OrderItem[]> {
+    return await this.orderItemsRepository.find({
+      where: { order_id },
+      relations: ['order', 'product'],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} orderItem`;
+  async update(order_id: string, product_id: string, updateOrderItemDto: UpdateOrderItemDto): Promise<OrderItem> {
+    const orderItem = await this.orderItemsRepository.findOne({
+      where: { order_id, product_id },
+    });
+
+    if (!orderItem) {
+      throw new NotFoundException(`OrderItem with Order ID ${order_id} and Product ID ${product_id} not found`);
+    }
+
+    Object.assign(orderItem, updateOrderItemDto);
+    return await this.orderItemsRepository.save(orderItem);
   }
 
-  update(id: number, updateOrderItemDto: UpdateOrderItemDto) {
-    return `This action updates a #${id} orderItem`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} orderItem`;
+  async remove(order_id: string, product_id: string): Promise<void> {
+    const result = await this.orderItemsRepository.delete({ order_id, product_id });
+    if (result.affected === 0) {
+      throw new NotFoundException(`OrderItem with Order ID ${order_id} and Product ID ${product_id} not found`);
+    }
   }
 }
