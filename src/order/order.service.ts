@@ -33,7 +33,13 @@ export class OrderService {
     return `This action updates a #${id} order`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} order`;
+  async remove(id: string): Promise<void> {
+    const order = await this.orderRepository.findOne({ where: { order_id: id } });
+
+    if (!order) {
+      throw new NotFoundException(`Commande avec l'ID ${id} non trouvée.`);
+    }
+
+    await this.orderRepository.delete(id);
   }
 }
