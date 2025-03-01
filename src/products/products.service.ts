@@ -16,14 +16,12 @@ export class ProductsService {
   async create(createProductDto: CreateProductDto): Promise<Product> {
     const { name, description, price } = createProductDto;
 
-    // Créer une nouvelle instance de produit
     const product = this.productRepository.create({
       name,
       description,
       price,
     });
 
-    // Sauvegarder le produit dans la base de données
     return await this.productRepository.save(product);
   }
 
